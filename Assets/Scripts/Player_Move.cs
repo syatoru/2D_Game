@@ -5,8 +5,8 @@ using UnityEngine;
 public class Player_Move : MonoBehaviour
 {
     // Start is called before the first frame update
-    public float speed = 17;
-    public float jumpForce = 1000f;
+    public float speed;
+    public float jumpForce;
     private Rigidbody2D rb2d;
     private Animator anim;
     private SpriteRenderer spRenderer;
@@ -53,16 +53,16 @@ public class Player_Move : MonoBehaviour
         float velX = rb2d.velocity.x;
         float velY = rb2d.velocity.y;
 
-        if (Mathf.Abs(velX) > 15)
+        if (Mathf.Abs(velX) > 20)
         {
 
-            if (velX > 15.0f)
+            if (velX > 20.0f)
             {
-                rb2d.velocity = new Vector2(15.0f, velY);
+                rb2d.velocity = new Vector2(20.0f, velY);
             }
-            if (velX < -15.0f)
+            if (velX < -20.0f)
             {
-                rb2d.velocity = new Vector2(-15.0f, velY);
+                rb2d.velocity = new Vector2(-20.0f, velY);
             }
         }
     }
