@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class Enemy_Move_1 : MonoBehaviour
 {
-    [Header("移動速度")] public float speed;
+    [Header("移動速度")] public float DefaultSpeed;
     [Header("画面外でも行動する")] public bool nonVisibleAct;
+    public GameObject cubeA;
+    public GameObject cubeB;
     #region//プライベート変数
     private Rigidbody2D rb = null;
     private SpriteRenderer sr = null;
     private GameObject playerObject;
     private Vector3 PlayerPosition;
     private Vector3 EnemyPosition;
+    private float dis;
+    private float Speed;
     #endregion
 
     void Start()
@@ -27,6 +31,10 @@ public class Enemy_Move_1 : MonoBehaviour
 
     void Update()
     {
+        Vector3 posA = cubeA.transform.position;
+        Vector3 posB = cubeB.transform.position;
+        dis = Vector3.Distance(posA, posB);
+        Debug.Log("距離 : " + dis);
     }
 
     private void FixedUpdate()
@@ -34,14 +42,25 @@ public class Enemy_Move_1 : MonoBehaviour
         //画面内
         if (sr.isVisible || nonVisibleAct)
         {
-            //行動する
-            PlayerPosition = playerObject.transform.position;
-            EnemyPosition = transform.position;
+            if(dis < 1.5f)
+            {
+                Debug.Log("距離が1以下");
+                Bullet_Create.EnemyAttack = true;
+                Freeze();
+            }
+            else
+            {
+                // スピードを元に戻す
+                Speed = DefaultSpeed;
+                //行動する
+                PlayerPosition = playerObject.transform.position;
+                EnemyPosition = transform.position;
 
-            EnemyPosition.x += (PlayerPosition.x - EnemyPosition.x) * speed;
-            EnemyPosition.y += (PlayerPosition.y - EnemyPosition.y) * speed;
-            transform.position = EnemyPosition;
+                EnemyPosition.x += (PlayerPosition.x - EnemyPosition.x) * Speed;
+                EnemyPosition.y += (PlayerPosition.y - EnemyPosition.y) * Speed;
+                transform.position = EnemyPosition;
 
+            }
         }
         //画面外
         else
@@ -58,6 +77,12 @@ public class Enemy_Move_1 : MonoBehaviour
             Enemy_Status.HP -= Player_Status.AT;
             Debug.Log("攻撃命中残りHP" + Enemy_Status.HP);
         }
+    }
+
+    void Freeze()
+    {
+        Speed = 0;
+        rb.Sleep();
     }
 
 }
