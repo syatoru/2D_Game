@@ -31,7 +31,7 @@ public class Bullet_Create : MonoBehaviour
             // Œü‚«‚½‚¢•ûŒü‚ðŒvŽZ
             Vector3 dir = (mouseWorldPos - AttackPointPos);
 
-            Vector3 shotForward = Vector3.Scale((dir - transform.position), new Vector3(1, 1, 0)).normalized;
+            Vector3 shotForward = Vector3.Scale(dir, new Vector3(1, 1, 0)).normalized;
 
 
             GameObject clone = Create(mouseWorldPos);

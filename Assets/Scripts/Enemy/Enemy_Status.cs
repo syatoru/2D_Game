@@ -9,6 +9,7 @@ public class Enemy_Status : MonoBehaviour
     private int[] EnemyAtTable = {0,10,30,40};
     public static float HP;
     public static float AT;
+    public static float CT;
 
     // Start is called before the first frame update
     void Start()

@@ -16,6 +16,7 @@ public class Enemy_Move_1 : MonoBehaviour
     private Vector3 EnemyPosition;
     private float dis;
     private float Speed;
+    private float CoolTime;
     #endregion
 
     void Start()
@@ -34,7 +35,6 @@ public class Enemy_Move_1 : MonoBehaviour
         Vector3 posA = cubeA.transform.position;
         Vector3 posB = cubeB.transform.position;
         dis = Vector3.Distance(posA, posB);
-        Debug.Log("‹——£ : " + dis);
     }
 
     private void FixedUpdate()
@@ -44,7 +44,6 @@ public class Enemy_Move_1 : MonoBehaviour
         {
             if(dis < 1.5f)
             {
-                Debug.Log("‹——£‚ª1ˆÈ‰º");
                 Bullet_Create.EnemyAttack = true;
                 Freeze();
             }
