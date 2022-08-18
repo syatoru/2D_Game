@@ -79,7 +79,8 @@ public class Player_Move : MonoBehaviour
 
     private void Attack()
     {
-
+        // プレイヤーの弾を生成
+        Bullet_Create.PlayerAttack = true;
     }
     // ローリング処理
     private void Rolling()
