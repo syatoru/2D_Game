@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - Wall
   - Bullet
+  - EnemyAttackPoint
+  - PlayerAttackPoint
   layers:
   - Default
   - TransparentFX
@@ -48,8 +50,17 @@ TagManager:
   - name: ground
     uniqueID: 1959661443
     locked: 0
+  - name: floor
+    uniqueID: 2402938523
+    locked: 0
+  - name: floor2
+    uniqueID: 3313161265
+    locked: 0
   - name: wall
     uniqueID: 1599032867
+    locked: 0
+  - name: stairs
+    uniqueID: 1329578095
     locked: 0
   - name: weapon
     uniqueID: 1407588839
@@ -62,4 +73,7 @@ TagManager:
     locked: 0
   - name: player
     uniqueID: 2312670039
+    locked: 0
+  - name: decoration
+    uniqueID: 1106369535
     locked: 0

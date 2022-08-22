@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Enemy_Move_1 : MonoBehaviour
 {
-    [Header("移動速度")] public float DefaultSpeed;
+    public List<EnemyData> enemyDatabase;
     [Header("画面外でも行動する")] public bool nonVisibleAct;
-    public GameObject cubeA;
-    public GameObject cubeB;
+    public GameObject Player;
+    public GameObject Enemy;
+    public GameObject DamageText;
     #region//プライベート変数
     private Rigidbody2D rb = null;
     private SpriteRenderer sr = null;
@@ -15,7 +17,18 @@ public class Enemy_Move_1 : MonoBehaviour
     private Vector3 PlayerPosition;
     private Vector3 EnemyPosition;
     private float dis;
+
+    // 敵ステータス
+    private int Pattern;
+    private float HP;
+    private float DF;
+    private float PA;
+    private float EXP;
     private float Speed;
+    private float Speed_Now;
+
+    private bool isAct;
+
     #endregion
 
     void Start()
@@ -27,14 +40,30 @@ public class Enemy_Move_1 : MonoBehaviour
         PlayerPosition = playerObject.transform.position;
         EnemyPosition = transform.position;
 
+        EnemyData data = enemyDatabase[0];
+
+        Pattern = data.EnemyPattern;
+        HP = data.EnemyHP;
+        DF = data.EnemyDF;
+        PA = data.EnemyPA;
+        EXP = data.EnemyEXP;
+        Speed = data.EnemySpeed;
+        Speed_Now = Speed;
     }
 
     void Update()
     {
-        Vector3 posA = cubeA.transform.position;
-        Vector3 posB = cubeB.transform.position;
-        dis = Vector3.Distance(posA, posB);
-        Debug.Log("距離 : " + dis);
+        // 敵とプレイヤーとの距離
+        Vector3 Player_pos = Player.transform.position;
+        Vector3 Enemy_pos = Enemy.transform.position;
+        dis = Vector3.Distance(Player_pos, Enemy_pos);
+
+        // HPが0になったら
+        if (HP <= 0)
+        {
+            GameData.Player_EXP += EXP;
+            Destroy(this.gameObject);
+        }
     }
 
     private void FixedUpdate()
@@ -42,46 +71,118 @@ public class Enemy_Move_1 : MonoBehaviour
         //画面内
         if (sr.isVisible || nonVisibleAct)
         {
-            if(dis < 1.5f)
+            // スピードを元に戻す
+            Speed_Now = Speed;
+            // 行動する条件
+            ConditionsAct(Pattern);
+
+            // 敵の行動
+            if (isAct == true)
             {
-                Debug.Log("距離が1以下");
-                Bullet_Create.EnemyAttack = true;
-                Freeze();
+                // 行動がtrueだった時にする処理
+                IsActTrue(Pattern);
             }
             else
             {
-                // スピードを元に戻す
-                Speed = DefaultSpeed;
-                //行動する
-                PlayerPosition = playerObject.transform.position;
-                EnemyPosition = transform.position;
-
-                EnemyPosition.x += (PlayerPosition.x - EnemyPosition.x) * Speed;
-                EnemyPosition.y += (PlayerPosition.y - EnemyPosition.y) * Speed;
-                transform.position = EnemyPosition;
-
+                // 行動がfalseだった時にする処理
+                IsActFalse(Pattern);
             }
         }
         //画面外
         else
         {
-            rb.Sleep();
+            ConditionsNonVisibleAct(Pattern);
         }
     }
+
+    // 弾がぶつかったら
     void OnTriggerEnter2D(Collider2D col)
     {
         // ぶつかったオブジェクトがプレイヤーの弾だったら
         if (col.gameObject.tag == "PlayerBullet")
         {
+            float rnd = Random.Range(0.85f, 1.0f);
+            // (プレイヤーの攻撃力 + 弾の攻撃力) / (敵の防御力 / 50 + 2) * (0.85～1.0)
+            float Attack = (float)Mathf.Round((col.GetComponent<Bullet>().BulletPA) / (DF / 50 + 2) * rnd);
+
             // 敵HPを攻撃力分減らす
-            Enemy_Status.HP -= Player_Status.AT;
-            Debug.Log("攻撃命中残りHP" + Enemy_Status.HP);
+            HP -= Attack;
+            Debug.Log("ダメージ" + Attack);
+            // ダメージテキスト表示
+            Instantiate(DamageText, this.transform.position, transform.rotation).GetComponent<TextMesh>().text = Attack.ToString();
+            Debug.Log("攻撃命中残りHP" + HP);
         }
     }
 
+    // 行動条件
+    void ConditionsAct(int Pattern)
+    {
+        switch (Pattern)
+        {
+            case 1:
+                // プレイヤーと敵との距離が4.0fより近かったら行動
+                if (dis < 4.0f)
+                {
+                    isAct = true;
+                }
+                else
+                {
+                    isAct = false;
+                }
+                break;
+
+            // 定数に一致しなかったら何もしない
+            default:
+                break;
+        }
+    }
+
+    void IsActTrue(int Pattern)
+    {
+        switch (Pattern)
+        {
+            case 1:
+                Bullet_Create.EnemyPA = PA;
+                Bullet_Create.EnemyAttack = true;
+                Freeze();
+                break;
+            default:
+                break;
+        }
+    }
+
+    void IsActFalse(int Pattern)
+    {
+        switch (Pattern)
+        {
+            case 1:
+                PlayerPosition = playerObject.transform.position;
+                EnemyPosition = transform.position;
+
+                EnemyPosition.x += (PlayerPosition.x - EnemyPosition.x) * Speed_Now;
+                EnemyPosition.y += (PlayerPosition.y - EnemyPosition.y) * Speed_Now;
+                transform.position = EnemyPosition;
+                break;
+            default:
+                break;
+        }
+    }
+
+    void ConditionsNonVisibleAct(int Pattern)
+    {
+        switch (Pattern) {
+            case 1:
+                rb.Sleep();
+                break;
+            default:
+                break;
+        }
+
+    }
+    // 行動を止める
     void Freeze()
     {
-        Speed = 0;
+        Speed_Now = 0;
         rb.Sleep();
     }
 

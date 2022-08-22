@@ -9,8 +9,9 @@ public class Bullet_Create : MonoBehaviour
     public GameObject Target;
     public static bool PlayerAttack;
     public static bool EnemyAttack;
-    public float speed;
-    public float deleteTime;
+    public static float EnemyPA;
+    public float BulletCreateCT;
+    private bool isCoolTime = true;
 
     // Start is called before the first frame update
     void Start()
@@ -20,40 +21,45 @@ public class Bullet_Create : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 AttackPointPos = AttackPoint.transform.position;
-
-        if (PlayerAttack == true && this.gameObject.tag == "PlayerAttackPoint")
+        if (isCoolTime == true)
         {
-            
-            // クリックした座標の取得（スクリーン座標からワールド座標に変換）
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 AttackPointPos = AttackPoint.transform.position;
 
-            // 向きたい方向を計算
-            Vector3 dir = (mouseWorldPos - AttackPointPos);
+            if (PlayerAttack == true && this.gameObject.tag == "PlayerAttackPoint")
+            {
 
-            Vector3 shotForward = Vector3.Scale((dir - transform.position), new Vector3(1, 1, 0)).normalized;
+                // クリックした座標の取得（スクリーン座標からワールド座標に変換）
+                Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                // 向きたい方向を計算
+                Vector3 dir = (mouseWorldPos - AttackPointPos);
+
+                Vector3 shotForward = Vector3.Scale(dir, new Vector3(1, 1, 0)).normalized;
 
 
-            GameObject clone = Create(mouseWorldPos);
-            clone.gameObject.tag = "PlayerBullet";
-            clone.transform.rotation = Quaternion.FromToRotation(Vector3.up, shotForward);
-            PlayerAttack = false;
-            Destroy(clone, deleteTime);
-        }
-        if(EnemyAttack == true && this.gameObject.tag == "EnemyAttackPoint")
-        {
-            Vector3 TargetPos = Target.transform.position;
-            
-            // 向きたい方向を計算
-            Vector3 dir = (TargetPos - AttackPointPos);
-            // 向きたい方向に回転
-            //AttackPoint.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+                GameObject clone = Create(mouseWorldPos);
+                clone.gameObject.tag = "PlayerBullet";
+                clone.transform.rotation = Quaternion.FromToRotation(Vector3.up, shotForward);
+                PlayerAttack = false;
+                StartCoroutine(CoolTime());
+                Destroy(clone, Bullet.GetComponent<Bullet>().BulletDeleteTime);
+            }
+            if (EnemyAttack == true && this.gameObject.tag == "EnemyAttackPoint")
+            {
+                Vector3 TargetPos = Target.transform.position;
 
-            GameObject clone = Create(TargetPos);
-            clone.gameObject.tag = "EnemyBullet";
-            clone.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-            EnemyAttack = false;
-            Destroy(clone, deleteTime);
+                // 向きたい方向を計算
+                Vector3 dir = (TargetPos - AttackPointPos);
+                // 向きたい方向に回転
+                //AttackPoint.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+
+                GameObject clone = Create(TargetPos);
+                clone.gameObject.tag = "EnemyBullet";
+                clone.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+                EnemyAttack = false;
+                StartCoroutine(CoolTime());
+                Destroy(clone, Bullet.GetComponent<Bullet>().BulletDeleteTime);
+            }
         }
         
     }
@@ -67,7 +73,19 @@ public class Bullet_Create : MonoBehaviour
         Vector3 shotForward = Vector3.Scale((Pos - transform.position), new Vector3(1, 1, 0)).normalized;
 
         // 弾に速度を与える
-        clone.GetComponent<Rigidbody2D>().velocity = shotForward * speed;
+        clone.GetComponent<Rigidbody2D>().velocity = shotForward * Bullet.GetComponent<Bullet>().BulletSPEED;
         return clone;
     }
+
+    // 弾の生成クールタイム
+    private IEnumerator CoolTime()
+    {
+        isCoolTime = false;
+        if (this.gameObject.tag == "PlayerAttackPoint")
+            yield return new WaitForSeconds(Bullet.GetComponent<Bullet>().BulletCT);
+        if (this.gameObject.tag == "EnemyAttackPoint")
+            yield return new WaitForSeconds(Bullet.GetComponent<Bullet>().BulletCT);
+        isCoolTime = true;
+    }
+
 }
