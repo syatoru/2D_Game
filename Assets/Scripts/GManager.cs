@@ -5,9 +5,7 @@ using UnityEngine;
 public class GManager : MonoBehaviour
 {
     public static GManager instance = null;
-    public int score;
-    public int stageNum;
-    public int continueNum;
+
 
     private void Awake()
     {
@@ -20,5 +18,13 @@ public class GManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+
     }
+    // íœ‚Ìˆ—
+    void OnDestroy()
+    {
+
+    }
+
 }
