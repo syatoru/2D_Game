@@ -15,4 +15,7 @@ public class GameData
 
     public static float Player_HP_Now;          // プレイヤーの現在のHP
     public static float Player_MP_Now;          // プレイヤーの現在のMP
+
+    public static Item[] items; // アイテムデータベース1234
+    public static byte[] bag = new byte[21]; // バッグの情報、255は無
 }

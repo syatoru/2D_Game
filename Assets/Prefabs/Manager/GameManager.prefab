@@ -46,6 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01b0697aa7336441bd4eb57c539db50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allItems:
+  - {fileID: 11400000, guid: 63b4663f90736b0478297c60fafc8ea8, type: 2}
+  - {fileID: 11400000, guid: fb897ee135031e14687ab916fc2c1a1a, type: 2}
+  - {fileID: 11400000, guid: b6b0d8d060d38c54ebb53acd75bfeef5, type: 2}
+  - {fileID: 11400000, guid: 851ac9d16b3c6f84aa62708ba97fcbfb, type: 2}
   saveClass: {fileID: 9044242736740592994}
   readClass: {fileID: 9044242736740592925}
 --- !u!114 &9044242736740592925

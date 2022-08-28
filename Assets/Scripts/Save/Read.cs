@@ -75,7 +75,8 @@ public class Read : MonoBehaviour
 
         GameData.Player_HP_Now = saveData.Player_HP_Now;
         GameData.Player_MP_Now = saveData.Player_MP_Now;
-
+        GameData.items = saveData.items;
+        GameData.bag = saveData.bag;
     }
 
 

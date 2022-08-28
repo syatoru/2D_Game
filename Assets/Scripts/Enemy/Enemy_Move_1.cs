@@ -137,6 +137,7 @@ public class Enemy_Move_1 : MonoBehaviour
         }
     }
 
+    // UŒ‚‚µ‚Ä‚¢‚é
     void IsActTrue(int Pattern)
     {
         switch (Pattern)
@@ -150,7 +151,7 @@ public class Enemy_Move_1 : MonoBehaviour
                 break;
         }
     }
-
+    // UŒ‚‚µ‚Ä‚¢‚È‚¢‚Æ‚«
     void IsActFalse(int Pattern)
     {
         switch (Pattern)
@@ -167,7 +168,7 @@ public class Enemy_Move_1 : MonoBehaviour
                 break;
         }
     }
-
+    //@‰æ–ÊŠO‚Ìs“®
     void ConditionsNonVisibleAct(int Pattern)
     {
         switch (Pattern) {

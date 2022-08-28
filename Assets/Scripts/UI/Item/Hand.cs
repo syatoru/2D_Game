@@ -1,0 +1,26 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Hand : MonoBehaviour
+{
+    private Item grabbingItem;
+    // Update is called once per frame
+
+    public Item GetGrabbingItem()
+    {
+        Item oldItem = grabbingItem;
+        grabbingItem = null;
+        return oldItem;
+    }
+
+    public void SetGrabbingItem(Item item)
+    {
+        grabbingItem = item;
+    }
+
+    public bool IsHavingItem()
+    {
+        return grabbingItem != null;
+    }
+}
