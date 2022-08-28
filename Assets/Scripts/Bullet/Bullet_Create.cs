@@ -25,7 +25,7 @@ public class Bullet_Create : MonoBehaviour
         {
             Vector3 AttackPointPos = AttackPoint.transform.position;
 
-            if (PlayerAttack == true && this.gameObject.tag == "PlayerAttackPoint")
+            if (PlayerAttack == true && this.gameObject.tag == "Pivot")
             {
 
                 // クリックした座標の取得（スクリーン座標からワールド座標に変換）
@@ -44,7 +44,7 @@ public class Bullet_Create : MonoBehaviour
                 StartCoroutine(CoolTime());
                 Destroy(clone, Bullet.GetComponent<Bullet>().BulletDeleteTime);
             }
-            if (EnemyAttack == true && this.gameObject.tag == "EnemyAttackPoint")
+            if (EnemyAttack == true && this.gameObject.tag == "Enemy")
             {
                 Vector3 TargetPos = Target.transform.position;
 
@@ -81,9 +81,9 @@ public class Bullet_Create : MonoBehaviour
     private IEnumerator CoolTime()
     {
         isCoolTime = false;
-        if (this.gameObject.tag == "PlayerAttackPoint")
+        if (this.gameObject.tag == "Pivot")
             yield return new WaitForSeconds(Bullet.GetComponent<Bullet>().BulletCT);
-        if (this.gameObject.tag == "EnemyAttackPoint")
+        if (this.gameObject.tag == "Enemy")
             yield return new WaitForSeconds(Bullet.GetComponent<Bullet>().BulletCT);
         isCoolTime = true;
     }

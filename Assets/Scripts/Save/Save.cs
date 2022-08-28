@@ -64,6 +64,9 @@ public class Save : MonoBehaviour
 
         saveData.Player_HP_Now = GameData.Player_HP_Now;
         saveData.Player_MP_Now = GameData.Player_MP_Now;
+
+        saveData.items = GameData.items;
+        saveData.bag = GameData.bag;
         return saveData;
     }
 

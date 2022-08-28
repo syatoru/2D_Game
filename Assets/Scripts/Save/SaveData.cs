@@ -16,4 +16,7 @@ public class SaveData
 
     public float Player_HP_Now;          // プレイヤーの現在のHP
     public float Player_MP_Now;          // プレイヤーの現在のMP
+
+    public Item[] items;
+    public byte[] bag;
 }

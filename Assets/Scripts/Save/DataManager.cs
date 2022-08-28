@@ -5,6 +5,8 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
     public static DataManager instance = null;
+    [SerializeField]
+    private Item[] allItems;
     //クラスの参照
     public Save saveClass;
     public Read readClass;
@@ -82,6 +84,23 @@ public class DataManager : MonoBehaviour
 
         GameData.Player_HP_Now = GameData.Player_HP_Max;
         GameData.Player_MP_Now = GameData.Player_MP_Max;
+
+        GameData.items = allItems;
+        // バッグの中身初期化
+        for (int i = 0; i < 21; i++)
+            GameData.bag[i] = 255;
+        GameData.bag[1] = 0;
+        GameData.bag[7] = 1;
+        GameData.bag[9] = 3;
+        GameData.bag[0] = 2;
+        GameData.bag[20] = 0;
+        Save();
+        Read();
+    }
+    
+    public void Load()
+    {
+        Read();
         Save();
         Read();
     }

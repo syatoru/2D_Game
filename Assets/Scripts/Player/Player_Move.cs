@@ -53,7 +53,8 @@ public class Player_Move : MonoBehaviour
         {
             Rolling_f = true;
         }
-        MouseLeftClick();
+        //　タブが押されていない間
+        if(KeyManager.TabActive == false)MouseLeftClick();
 
 
         if (Input.GetMouseButtonDown(1))
@@ -66,7 +67,6 @@ public class Player_Move : MonoBehaviour
     {
         // マウスの向いている方向を調べる
         MouseDirection();
-
         // ローリング処理
         if (Rolling_f == true && isRolling == true)
         {
@@ -176,19 +176,15 @@ public class Player_Move : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && isAttack == true)
         {
-            Debug.Log("キーを押しました");
             Attack();
             StartCoroutine(AttackCoolTime(0.15f));
-            Debug.Log("待ちます");
         }
         else if (Input.GetMouseButton(0) && isAttack == true)
         {
-            Debug.Log("キーを押しています");
             Attack();
         }
         else if (Input.GetMouseButtonUp(0) && isAttack == true)
         {
-            Debug.Log("キーを押し終わりました");
             Bullet_Create.PlayerAttack = false;
         }
     }
